@@ -12,9 +12,9 @@ app.get('/notes', async (req: Request, res: Response) => {
     let title:string = req.query.title as string;
     let limit:number = typeof req.query.limit === 'string' ?  parseInt(req.query.limit) : 20;
 
-    const daddy  = await db.find(title, limit);
+    const result  = await db.find(title, limit);
     
-    res.status(200).send(daddy);
+    res.status(200).send(result);
 })
 
 app.post('/notes', (req: Request, res: Response) => {
