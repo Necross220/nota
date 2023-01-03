@@ -1,0 +1,12 @@
+#node modules
+node_modules
+
+#Jetbrains
+.idea
+
+#vs code stuff
+.vsc
+.vs
+
+#log files
+*.log
