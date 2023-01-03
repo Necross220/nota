@@ -1,4 +1,4 @@
-import * as db from './src/modules/databaseFunction';
+import * as db from './src/modules/notes.data';
 
 import express, {Request, Response} from 'express';
 
@@ -12,14 +12,16 @@ app.get('/notes', async (req: Request, res: Response) => {
     let title:string = req.query.title as string;
     let limit:number = typeof req.query.limit === 'string' ?  parseInt(req.query.limit) : 20;
 
+    console.log(title, limit);
+
     const result  = await db.find(title, limit);
-    
     res.status(200).send(result);
 })
 
 app.post('/notes', (req: Request, res: Response) => {
-    db.insert(req.body);
-    res.status(200).send('Success');
+    let result = db.insert(req.body);
+
+    res.status(200).send(result);
 });
 
 app.listen(port, () => {

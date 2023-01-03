@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { isNotEmittedStatement } from "typescript";
 
 const uri = "mongodb://root:example@localhost:27017/?authMechanism=DEFAULT";
 const client = new MongoClient(uri);
@@ -21,21 +22,18 @@ export async function connect() {
 }
 
 //INSERT
-export async function insert(params: Notes) {
+export async function insert(Notes: Notes) {
     try {
         const database = client.db("NotaDB");
         const table = database.collection<Notes>("notes");
-        
-        if(1){
-            //INSERT MANY
-            // const result = await table.insertMany(params);
-        }else{
-            //INSERT ONE
-            const result = await table.insertOne(params);
-        }
+
+        const result = await table.insertOne(Notes);
+
     }catch(error){
-        console.log(error);
+        return error
     }
+
+    return true;
 }
 
 //FIND 
@@ -45,16 +43,14 @@ export async function find(title:string, limit:number = 10) {
         
         const database = client.db("NotaDB"); 
         const table = database.collection<Notes>("notes");
-        const notes = table.find({ title }).limit(limit)
-        
-        console.log(notes);
+        const notes = table.find({ title: title }).limit(limit).toArray()
 
         return notes;
 
     }catch(error){
         return error;
     }
-    
+
 }
 
 //UPDATE
